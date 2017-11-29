@@ -1,7 +1,7 @@
 /*
  * SymTable.cpp
  * Author: Wyatt Emery
- * Date: DEc 2017
+ * Date: DEC 2017
  *
  * COSC 4785, Homework6
  *
@@ -68,6 +68,8 @@ void Type::print(ostream* out) const
 SymTable::SymTable(SymTable* parent, string value):_parent(parent), _value(value)
 {}
 
+int SymTable::_main = 0;
+
 SymTable::~SymTable()
 {
   for(auto it = _children.begin(); it!= _children.end(); it ++)
@@ -87,6 +89,8 @@ int SymTable::addChild(SymTable* child)
   _children.insert(pair<string, SymTable*>(child->getValue(), child));
   return 0;
 }
+
+void SymTable::incMain(void){ _main++; }
 
 Type* SymTable::lookup(string identifier) const
 {
@@ -204,6 +208,8 @@ string SymTable::findFunc() const
   }
   return _value;
 }
+
+int SymTable::getMain(void) const {return _main;}
 
 void SymTable::print(ostream* out, int level) const
 {

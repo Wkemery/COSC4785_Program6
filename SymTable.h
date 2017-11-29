@@ -45,6 +45,7 @@ public:
 class SymTable
 {
 private:
+  static int _main;
   SymTable* _parent;
   string _value;
   unordered_map<string, Type*> _entries;
@@ -67,6 +68,9 @@ public:
    * the key. type is the Type
    * Return 0 for success, -1 for failure due to duplicate entry
    */
+  
+  void incMain(void);
+  /* Increment static main count var by 1 */
   
   /*Accessor Functions*/
   Type* lookup(string identifier) const;
@@ -111,6 +115,9 @@ public:
   /* look up the tree until you find the root.
    * Return a pointer to the root tree.
    */
+  
+  int getMain(void) const;
+  /* return static main count var*/
   
   void print(ostream* out, int level) const;
   /* Print the symbol table, all it's entries and all its children

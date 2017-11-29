@@ -1996,7 +1996,32 @@ void MethodDec::buildTable(SymTable* table)
     myRetType = ((TypeNode*)_subNodes[0])->getType();
   else myRetType = "void";
   
-  
+  if(_value == "main")
+  {
+    //This is main and has special requirements
+    if (paramChildi >=0 )
+    {
+      cerr << "Type Error: "  << "Main() must be declared with 0 arguments"
+      << " Line " << _lineNumber << endl;
+      return;
+    }
+    
+    if (myRetType != "int" && myRetType != "void")
+    {
+      cerr << "Type Error: "  << "Main() must have return type int or void"
+      << " Line " << _lineNumber << endl;
+      return;
+    }
+    
+    //increment main count
+    table->incMain();
+    if(table->getMain() > 1)
+    {
+      cerr << "Type Error: "  << "Redeclaration of Main()"
+      << " Line " << _lineNumber << endl;
+      return;
+    }
+  }
   //create mytype
   Type* myType = new Type("", myRetType, paramTypes);
   ret = table->insert(nameMangle(_value, paramTypes), myType);
