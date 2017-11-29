@@ -403,7 +403,13 @@ bool Statement::typeCheck(SymTable* table)
       
       //get type of function name from symbol table
       string funcName = ((Name*)_subNodes[0])->getFuncName();
-      if(funcName == "this")
+      Type* classType = _myTable->getClassType();
+      if(classType == 0)
+      {
+        cerr << "FATAL Internal Error" << endl;
+        exit(1);
+      }
+      if(funcName == "this" || funcName == classType->getlval())
       {
         cerr << "Type Error: "  << "Direct Constructor call" 
         << " Line " << _lineNumber << endl;
@@ -511,13 +517,19 @@ bool Statement::typeCheck(SymTable* table)
       //empty param list function call
       //get type of function name from symbol table
       string funcName = ((Name*)_subNodes[0])->getFuncName();
-      
-      if(funcName == "this")
+      Type* classType = _myTable->getClassType();
+      if(classType == 0)
+      {
+        cerr << "FATAL Internal Error" << endl;
+        exit(1);
+      }
+      if(funcName == "this" || funcName == classType->getlval())
       {
         cerr << "Type Error: "  << "Direct Constructor call" 
         << " Line " << _lineNumber << endl;
-        return false;   
+        return false;      
       }
+      
       string mangledFuncName = nameMangle(funcName, 0);
       
       Type* funcType = ((Name*)_subNodes[0])->getTypeCheck(_myTable, mangledFuncName);
@@ -973,17 +985,18 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
   {  
     case NAMETHIS:
     {
-      Type* ret = table->getClassType();
-      if(ret == 0)
-      {
-        cerr << "FATAL internal Error" << endl;
-        exit(1);
-      }
-      
-      if(mangledName == "")
-      {
-        return new Type(ret->getClassType(), ret->getClassType(), 0, "", true);
-      }
+//       Type* ret = table->getClassType();
+//       if(ret == 0)
+//       {
+//         cerr << "FATAL internal Error" << endl;
+//         exit(1);
+//       }
+//       
+//       if(mangledName == "")
+//       {
+//         return new Type(ret->getClassType(), ret->getClassType(), 0, "", true);
+//       }
+      return new Type("", "this", 0, "", true);
 //       else
 //       {
 //         ret = table->lookup(mangledName);
@@ -1018,13 +1031,14 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
         }
       }
       
-
-      
       return ret;
     }
     case NAMEDOTID:
     {
       Type* nameType = ((Name*)_subNodes[0])->getTypeCheck(table, "");
+      if(nameType == 0) return 0;
+      if(nameType->getrval() == "this") 
+        nameType = table->getClassType();
       if(nameType == 0) return 0;
       
       if(nameType->getlval() == "")
@@ -1047,6 +1061,13 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
     case NAMEEXP:
     {
       Type* nameType = ((Name*)_subNodes[0])->getTypeCheck(table, "");
+      if(nameType == 0) return 0;
+      if(nameType->getrval() == "this") 
+      {
+        cerr << "Type Error: " << "Array Access using \"this\" is not allowed" 
+        << " Line " << _lineNumber << endl;
+        return 0;
+      }
       if(nameType == 0) return 0;
       
       Type* expType = _subNodes[1]->getTypeCheck(table);
@@ -1634,25 +1655,6 @@ Type* NewExpression::getTypeCheck(SymTable* table)
     }
     case NEWEXPMULTI:
     {
-//       //child is Multibracks
-//       string multibracksType = ((Multibracks*)_subNodes[0])->getType();
-//       
-//       if(_value != "int")
-//       {
-//         // check to see if type exists
-//         if(!table->classLookup(_value))
-//         {
-//           cerr << "Type Error: "  << "Type \"" << _value << "\" Does not Exist"
-//           << " Line " << _lineNumber << endl;
-//           return 0;
-//         }
-//       }
-//       
-//       //type exists or is an int
-//       string type = _value;
-//       type.append(multibracksType);
-//       
-//       return new Type("", type, 0, "", true);
       cerr << "Type Error: "  << "Invalid number of Dimensions Allocated"
       << " Line " << _lineNumber << endl;
       return 0;

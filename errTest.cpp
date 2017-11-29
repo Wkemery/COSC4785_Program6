@@ -7,6 +7,7 @@ class ClassA
   int [][] myintarr2;
   int [][][][][] myintarr5;
   ClassA myClassA1;
+  ClassA[] myClassarrA1;
 //   ClassA myClassA1; //error var declared twice
   ClassB myClassB1;
 //   int myClassB1; //error var declared twice
@@ -44,13 +45,30 @@ class ClassA
 //     if(myClassA1 + null){} //error type does not evaluate to boolean
 //     while(myClassA1){}//error expression does not evaluate to boolean
 //     if(myClassA1){}//error expression does not evaluate to boolean
-
+//     if(!myClassA1){}//error expression does not evaluate to boolean or not allowed with !
+//     if(+myClassA1){}//error expression does not evaluate to boolean
+    
     /*Arithmetic Operators Tests*/
 //     if(myClassB1 < myint1){} // error both exps must be int
 //     if(myint1 > myClassB1){} // error both exps must be int
 //     if(myClassB1 <= myClassA1){} //error can't compare object to nonnull
 //     if(myClassB1 >= myClassB1){} //error can't compare object to nonnull  
 
+    /*weird stuff that's not allowed by Buckner's command*/
+//     this[5] = null;//error "this" is not an array type
+//     this[0] = myClassA1;//error "this" is not an array type
+//     this[0][5] = null;
+//     myintarr1[0](); //error explicit initialization of array value not allowed or direct constructor called
+//     myClassarrA1[0]();//error explicit initialization of array value not allowed  direct constructor called
+//     myClassarrA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
+//     myClassA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
+    
+    /*Unary Operators Test*/
+    myClassA1 = +myClassA1;
+    myClassA1 = -myClassA1;
+    myClassA1 = !myClassA1;
+    
+    
 //     if((myClassA1 == null) && (myint1 == null)){}//error expressions not of same tyupe
 //     method1 = myint1; //error unrecognized identifier method1
 //     myint1 = method1; //error unrecognized identifier method1
@@ -77,6 +95,7 @@ class ClassA
 //     this(myClassA1);//error direct constructor call
 //     myClassA1.myClassB1.ClassB();//error direct constructor call
 //     myClassA1.myClassB1.ClassB(myint1);//error direct constructor call
+    ClassA();
     
     /*new tests*/
 //         myint1 = new ClassNone();//error classnone dne

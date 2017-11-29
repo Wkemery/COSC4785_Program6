@@ -207,10 +207,8 @@ Type* SymTable::getClassType() const
   {
     return _parent->lookup(_value);
   }
-  else
-  {
-    return _parent->getClassType();
-  }
+
+  return _parent->getClassType();
 }
 
 string SymTable::findFunc() const
