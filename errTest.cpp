@@ -11,9 +11,12 @@ class ClassA
 //   int myClassB1; //error var declared twice
 //   ClassNone mybadvar;//error invalid type
   
-  ClassA(){}
+  ClassA(){
+//     return 1; //error invalid return type;
+    return;
+  }
 //   ClassA(){}//error constructor delcared twice
-  
+  ClassA(int myvar1, ClassA myvar2){}
 //   A(){}//Error constructor name does not match class name
 //   ClassA(int var1, ClassNone var2){}//error invalid type classNone
 //   ClassA(int var1, int var1){} //error var1 declared twice
@@ -60,6 +63,14 @@ class ClassA
 //     print(myClassA1); //error not of type int
 //     print(5, myint1, myClassA1); //error not of type int
 
+    /*direct constructor calls*/
+//     this(); //error direct constructor call
+//     this(myint1, myClassA1);//error direct constructor call
+//     this(myClassA1);//error direct constructor call
+//     myClassA1.myClassB1.ClassB();//error direct constructor call
+//     myClassA1.myClassB1.ClassB(myint1);//error direct constructor call
+    
+//     return 1; //error invalid return type
   }
   
   int method2(int x, ClassA y, ClassB c)
@@ -76,7 +87,13 @@ class ClassA
 // class ClassA{} //error class declared twice
 
 class ClassB
-{}
+{
+  ClassC myClassC1;
+  ClassB(){}
+  ClassB(int myvar1){}
+}
 
 class ClassC
-{}
+{
+  int x;
+}

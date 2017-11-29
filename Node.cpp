@@ -405,8 +405,11 @@ bool Statement::typeCheck(SymTable* table)
       string funcName = ((Name*)_subNodes[0])->getFuncName();
       if(funcName == "this")
       {
-        funcName = _myTable->getClassType()->getClassType();
+        cerr << "Type Error: "  << "Direct Constructor call" 
+        << " Line " << _lineNumber << endl;
+        return false;      
       }
+      
       string mangledFuncName = nameMangle(funcName, argsType->getParams());
       Type* funcType = ((Name*)_subNodes[0])->getTypeCheck(_myTable, mangledFuncName);
       if(funcType == 0) return false;
@@ -511,7 +514,9 @@ bool Statement::typeCheck(SymTable* table)
       
       if(funcName == "this")
       {
-        funcName = _myTable->getClassType()->getClassType();
+        cerr << "Type Error: "  << "Direct Constructor call" 
+        << " Line " << _lineNumber << endl;
+        return false;   
       }
       string mangledFuncName = nameMangle(funcName, 0);
       
@@ -979,16 +984,16 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
       {
         return new Type(ret->getClassType(), ret->getClassType(), 0, "", true);
       }
-      else
-      {
-        ret = table->lookup(mangledName);
-        if(ret == 0)
-        {
-          cerr << "Type Error: " << " No Matching Constructor Declaration" 
-          << " Line " << _lineNumber << endl;
-        }
-        return ret;
-      }
+//       else
+//       {
+//         ret = table->lookup(mangledName);
+//         if(ret == 0)
+//         {
+//           cerr << "Type Error: " << " No Matching Constructor Declaration" 
+//           << " Line " << _lineNumber << endl;
+//         }
+//         return ret;
+//       }
     }
     case NAMEID:
     {
@@ -1030,8 +1035,14 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
       }
       if(mangledName == "") 
         return table->lookup(nameType->getlval(), _value, _lineNumber);
-      else
-        return table->lookup(nameType->getlval(), mangledName, _lineNumber);
+      
+      if(nameUnMangle(mangledName) == nameType->getlval())
+      {
+        cerr << "Type Error: " << "Direct Constructor call" 
+        << " Line " << _lineNumber << endl;
+        return 0;
+      }
+      return table->lookup(nameType->getlval(), mangledName, _lineNumber);
     }
     case NAMEEXP:
     {
