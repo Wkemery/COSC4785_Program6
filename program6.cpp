@@ -33,6 +33,10 @@ int main()
     if(forest[i] != 0) forest[i]->buildTable(symbolTable);
   }
     
+  if(symbolTable->getMain() == 0)
+  {
+    cerr << "Type Error: "  << "main() Undeclared " << endl;
+  }
   for(unsigned int i = 0; i < forest.size(); i++)
   {
     //do typecheck here. 

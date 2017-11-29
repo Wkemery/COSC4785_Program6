@@ -1607,6 +1607,12 @@ Type* NewExpression::getTypeCheck(SymTable* table)
       
       //second is Multibracks
       string multibracksType = ((Multibracks*)_subNodes[1])->getType();
+      if(multibracksType != "[]")
+      {
+        cerr << "Type Error: "  << " Invalid number of Dimensions Allocated"
+        << " Line " << _lineNumber << endl;
+        return 0;
+      }
       
       if(_value != "int")
       {
@@ -2001,14 +2007,14 @@ void MethodDec::buildTable(SymTable* table)
     //This is main and has special requirements
     if (paramChildi >=0 )
     {
-      cerr << "Type Error: "  << "Main() must be declared with 0 arguments"
+      cerr << "Type Error: "  << "main() must be declared with 0 arguments"
       << " Line " << _lineNumber << endl;
       return;
     }
     
     if (myRetType != "int" && myRetType != "void")
     {
-      cerr << "Type Error: "  << "Main() must have return type int or void"
+      cerr << "Type Error: "  << "main() must have return type int or void"
       << " Line " << _lineNumber << endl;
       return;
     }
@@ -2017,7 +2023,7 @@ void MethodDec::buildTable(SymTable* table)
     table->incMain();
     if(table->getMain() > 1)
     {
-      cerr << "Type Error: "  << "Redeclaration of Main()"
+      cerr << "Type Error: "  << "Redeclaration of main()"
       << " Line " << _lineNumber << endl;
       return;
     }
