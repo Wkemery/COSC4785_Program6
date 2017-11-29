@@ -100,6 +100,21 @@ Type* SymTable::lookup(string identifier) const
   else return it->second;
 }
 
+void SymTable::remove(string value)
+{
+  auto it = _entries.find(value);
+  if(it == _entries.end())
+  {
+    cerr << "FATAL internal Error!" << endl;
+    exit(1);
+  }
+  else
+  {
+    delete it->second;
+   _entries.erase(it); 
+  }
+}
+
 Type* SymTable::lookup(string className, string identifier, int linenum) const
 {
   //lookup the id in the class symtable of className

@@ -33,20 +33,30 @@ class ClassA
   void method1()
   {
     
-    
-//     this(5);//error no mlathcing constructure
+    /*Type mismatches*/
 //     myint1 = null; //error type mismatch
 //     if(myint1 == null){}//error type mismatch
 //     if(myint1 + null){} //error type mismatch
+//     myClassA1 = myint1; //error type mismatch
+//     myint1 = myClassA1; //error type mismatch
+
+    /* Boolean tests*/
 //     if(myClassA1 + null){} //error type does not evaluate to boolean
+//     while(myClassA1){}//error expression does not evaluate to boolean
+//     if(myClassA1){}//error expression does not evaluate to boolean
+
+    /*Arithmetic Operators Tests*/
+//     if(myClassB1 < myint1){} // error both exps must be int
+//     if(myint1 > myClassB1){} // error both exps must be int
+//     if(myClassB1 <= myClassA1){} //error can't compare object to nonnull
+//     if(myClassB1 >= myClassB1){} //error can't compare object to nonnull  
+
 //     if((myClassA1 == null) && (myint1 == null)){}//error expressions not of same tyupe
 //     method1 = myint1; //error unrecognized identifier method1
 //     myint1 = method1; //error unrecognized identifier method1
-//     myClassA1 = myint1; //error type mismatch
-//     myint1 = myClassA1; //error type mismatch
+
 //     method2(myint1, myint2, myClassB1);//error no matching function call
-//     while(myClassA1){}//error expression does not evaluate to boolean
-//     if(myClassA1){}//error expression does not evaluate to boolean
+
 //     return 0; //error does not match func return type
 //     myClassB1.x = 5;//error class b does not have a member named x
 
@@ -55,11 +65,7 @@ class ClassA
 
 //     this.x = 0; //errror x not declared within ClassA
     
-    /*Arithmetic Operators Tests*/
-//     if(myClassB1 < myint1){} // error both exps must be int
-//     if(myint1 > myClassB1){} // error both exps must be int
-//     if(myClassB1 <= myClassA1){} //error can't compare object to nonnull
-//     if(myClassB1 >= myClassB1){} //error can't compare object to nonnull   
+ 
 
     /* Print Tests*/
 //     print(myClassA1); //error not of type int
@@ -85,7 +91,10 @@ class ClassA
 //     myintarr5 = new int[10][2][9][][]; //error invalid number of dimensions allocated
 //     myintarr5 = new int[10][2][][][];//error invalid number of dimensions allocated
 //     myintarr5 = new int[10][][][][];//error invalid number of dimensions allocated
-    myintarr5 = new int[][][][][];//error invalid number of dimensions allocated
+//     myintarr5 = new int[][][][][];//error invalid number of dimensions allocated
+//     myintarr5 = new int[];//error invalid number of dimensions allocated
+//     myint1 = new int; //error cannot do this for ints
+    
 //     return 1; //error invalid return type
   }
   

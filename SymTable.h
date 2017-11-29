@@ -72,6 +72,8 @@ public:
   void incMain(void);
   /* Increment static main count var by 1 */
   
+  void remove(string value);
+  
   /*Accessor Functions*/
   Type* lookup(string identifier) const;
   /* look in the current symbol table and all the way up the root for identifier 

@@ -708,10 +708,11 @@ newexpression: NEW IDENTIFIER LPAREN arglist RPAREN {
                     yyerrok;
                     delete $1; delete $2; delete $3; delete $4;
                     }
-/*              | NEW IDENTIFIER {
+              | NEW IDENTIFIER {
                     $$ = new NewExpression($2->value, NEWEXPEMPTY);
+                    $$->setLineNumber($1->line);
                     delete $1; delete $2;
-                    }*/
+                    }
               | NEW IDENTIFIER brackexpression {
                     $$ = new NewExpression($2->value, $3, NEWEXPBRACK);
                     $$->setLineNumber($1->line);
@@ -727,10 +728,11 @@ newexpression: NEW IDENTIFIER LPAREN arglist RPAREN {
                     $$->setLineNumber($1->line);
                     delete $1; delete $2;
               }
-/*              | NEW INT {
+              | NEW INT {
                 $$ = new NewExpression(NEWEXPEMPTY);
+                $$->setLineNumber($1->line);
                 delete $1; delete $2;
-              }*/
+              }
               | NEW INT brackexpression {
                     $$ =  new NewExpression($3,NEWEXPBRACK);
                     $$->setLineNumber($1->line);

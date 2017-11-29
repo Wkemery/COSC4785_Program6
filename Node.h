@@ -262,6 +262,8 @@ private:
 
 class VarDec: public Node
 {
+private:
+  SymTable* _myTable;
 public:
   VarDec(Node* node1, string value);
   void buildTable(SymTable* table);

@@ -1634,38 +1634,41 @@ Type* NewExpression::getTypeCheck(SymTable* table)
     }
     case NEWEXPMULTI:
     {
-      //child is Multibracks
-      string multibracksType = ((Multibracks*)_subNodes[0])->getType();
-      
-      if(_value != "int")
-      {
-        // check to see if type exists
-        if(!table->classLookup(_value))
-        {
-          cerr << "Type Error: "  << "Type \"" << _value << "\" Does not Exist"
-          << " Line " << _lineNumber << endl;
-          return 0;
-        }
-      }
-      
-      //type exists or is an int
-      string type = _value;
-      type.append(multibracksType);
-      
-      return new Type("", type, 0, "", true);
-    }
-//     case NEWEXPEMPTY:
-//     {
-//       //assuming x = new A is not allowed.
+//       //child is Multibracks
+//       string multibracksType = ((Multibracks*)_subNodes[0])->getType();
+//       
 //       if(_value != "int")
 //       {
-//         //error classnone dne
-//         return 0;
+//         // check to see if type exists
+//         if(!table->classLookup(_value))
+//         {
+//           cerr << "Type Error: "  << "Type \"" << _value << "\" Does not Exist"
+//           << " Line " << _lineNumber << endl;
+//           return 0;
+//         }
 //       }
 //       
-//       return new Type("", _value);
-//       //TODO: memory leak caused here
-//     }
+//       //type exists or is an int
+//       string type = _value;
+//       type.append(multibracksType);
+//       
+//       return new Type("", type, 0, "", true);
+      cerr << "Type Error: "  << "Invalid number of Dimensions Allocated"
+      << " Line " << _lineNumber << endl;
+      return 0;
+    }
+    case NEWEXPEMPTY:
+    {
+      //assuming x = new A is allowed, but not x = new int;
+      
+      if(_value == "int")
+      {
+        cerr << "Type Error: "  << "Cannot create reference of primitive type int"
+        << " Line " << _lineNumber << endl;
+        return 0;
+      }
+      return new Type("", _value, 0, "", true);
+    }
     case NEWEXPPAREN:
     {
       //default constructor call, default consructor always exists
@@ -1679,13 +1682,7 @@ Type* NewExpression::getTypeCheck(SymTable* table)
       }
       
       //type exists, default constructor always exists
-      
-      //get type of constructor from symbol table, no args
-//       string mangledConsName = nameMangle(_value, 0);
-//       Type* consType = table->lookup(_value, mangledConsName, _lineNumber);
-//       if(consType == 0) return 0;
-      
-      return new Type("", _value);
+      return new Type("", _value, 0, "", true);
     }
   }
   return 0;
@@ -2210,6 +2207,7 @@ VarDec::VarDec(Node* node1, string value): Node(value, "VarDec")
 void VarDec::buildTable(SymTable* table)
 {
   int ret;
+  _myTable = table;
   //get my type from my child typenode
   string type = ((TypeNode*)_subNodes[0])->getType();
   //create mytype
@@ -2239,10 +2237,11 @@ bool VarDec::typeCheck(SymTable* table)
   
   if(type != "int")
   {
-    if(!table->classLookup(type))
+    if(!_myTable->classLookup(type))
     {
       cerr << "Type Error: Invalid Type \"" << type 
       << "\" Line " << _lineNumber << endl;
+      _myTable->remove(_value);
       return false;
     }
   }
