@@ -2,14 +2,15 @@ class ClassA
 {
   int myint1;
   int myint2;
-//   int myint2; //error var declared twice
   int[] myintarr1;
   int [][] myintarr2;
   int [][][][][] myintarr5;
   ClassA myClassA1;
   ClassA[] myClassarrA1;
-//   ClassA myClassA1; //error var declared twice
   ClassB myClassB1;
+//   ClassA myClassA1; //error var declared twice
+//   int myint2; //error var declared twice
+  
 //   int myClassB1; //error var declared twice
 //   ClassNone mybadvar;//error invalid type
   
@@ -47,6 +48,8 @@ class ClassA
 //     if(myClassA1){}//error expression does not evaluate to boolean
 //     if(!myClassA1){}//error expression does not evaluate to boolean or not allowed with !
 //     if(+myClassA1){}//error expression does not evaluate to boolean
+//     if((myClassA1 == null) && (myint1 == null)){}//error expressions not of same tyupe
+
     
     /*Arithmetic Operators Tests*/
 //     if(myClassB1 < myint1){} // error both exps must be int
@@ -64,26 +67,16 @@ class ClassA
 //     myClassA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
     
     /*Unary Operators Test*/
-    myClassA1 = +myClassA1;
-    myClassA1 = -myClassA1;
-    myClassA1 = !myClassA1;
+//     myClassA1 = +myClassA1;//error expression must be an int
+//     myClassA1 = -myClassA1;//error expression must be an int
+//     myClassA1 = !myClassA1;//error expression must be an int
     
-    
-//     if((myClassA1 == null) && (myint1 == null)){}//error expressions not of same tyupe
+    /*Undeclared stuff*/
 //     method1 = myint1; //error unrecognized identifier method1
 //     myint1 = method1; //error unrecognized identifier method1
-
 //     method2(myint1, myint2, myClassB1);//error no matching function call
-
-//     return 0; //error does not match func return type
 //     myClassB1.x = 5;//error class b does not have a member named x
-
-//     myintarr1[myClassA1] = 5;//error [doesnt evaluate to int]
-//     myint1 = myint2 + myClassA1;//errro expressions different types
-
 //     this.x = 0; //errror x not declared within ClassA
-    
- 
 
     /* Print Tests*/
 //     print(myClassA1); //error not of type int
@@ -95,8 +88,8 @@ class ClassA
 //     this(myClassA1);//error direct constructor call
 //     myClassA1.myClassB1.ClassB();//error direct constructor call
 //     myClassA1.myClassB1.ClassB(myint1);//error direct constructor call
-    ClassA();
-    
+//     ClassA();//error direct constructor call
+
     /*new tests*/
 //         myint1 = new ClassNone();//error classnone dne
 //         myint1 = new ClassNone(myint1);//error classnone dne
@@ -104,15 +97,17 @@ class ClassA
 //         myint1 = new ClassNone[5][];//error classnone dne
 //         myintarr1 = new int[myClassA1];//error [doesnt evaluate to int]
 //         myintarr1 = new int[new int[]];//error [doesnt evaluate to int]
-    // //     myintarr1[new int] = 5;//syntax error [doesnt evaluate to int]
+//         myintarr1[new int] = 5;//error new int not allowed
 //         myintarr1[new ClassA()] = 5; //error [doesnt evaluate to int]
-    // //     myint1 = new int;//syntax error
+//     myint1 = new int;//error new int not allowed
 //     myintarr5 = new int[10][2][9][][]; //error invalid number of dimensions allocated
 //     myintarr5 = new int[10][2][][][];//error invalid number of dimensions allocated
 //     myintarr5 = new int[10][][][][];//error invalid number of dimensions allocated
 //     myintarr5 = new int[][][][][];//error invalid number of dimensions allocated
 //     myintarr5 = new int[];//error invalid number of dimensions allocated
 //     myint1 = new int; //error cannot do this for ints
+    
+//     myint1 = myint2 + myClassA1;//errr expressions different types
     
 //     return 1; //error invalid return type
   }

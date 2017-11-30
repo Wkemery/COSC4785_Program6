@@ -523,7 +523,7 @@ bool Statement::typeCheck(SymTable* table)
         cerr << "FATAL Internal Error" << endl;
         exit(1);
       }
-      if(funcName == "this" || funcName == classType->getlval())
+      if(funcName == "this" || funcName == classType->getClassType())
       {
         cerr << "Type Error: "  << "Direct Constructor call" 
         << " Line " << _lineNumber << endl;
@@ -1231,6 +1231,12 @@ Type* Expression::getTypeCheck(SymTable* table)
     case EXPUNARY:
     {
       Type* expType = _subNodes[1]->getTypeCheck(table);
+      if(expType->getrval() != "int")
+      {
+        cerr << "Type Error: "  << "Expression must be of type int" 
+        << " Line " << _lineNumber << endl;
+        return 0;
+      }
       if(expType == 0) return 0;
       
       return expType;
