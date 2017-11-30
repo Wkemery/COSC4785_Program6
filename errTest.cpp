@@ -58,8 +58,12 @@ class ClassA
 //     if(myint1 > myClassB1){} // error both exps must be int
 //     if(myClassB1 <= myClassA1){} //error can't compare object to nonnull
 //     if(myClassB1 >= myClassB1){} //error can't compare object to nonnull  
-
-    /*weird stuff that's not allowed by Buckner's command*/
+//     myClassA1 = myClassA1 + myClassA1; //error both exps must be int
+//     myClassA1 = myClassA1 - null; //error both exps must be int
+//     myClassB1 = myClassB1 / myClassB1; //error both exps must be int
+//     myClassB1 = myint1 + myClassB1; //error both exps must be int or type mismatch
+    
+    /*other stuff that's not allowed by Buckner's command*/
 //     this[5] = null;//error "this" is not an array type
 //     this[0] = myClassA1;//error "this" is not an array type
 //     this[0][5] = null;

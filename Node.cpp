@@ -1091,7 +1091,7 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
       }
       type = type.substr(0, arrayPos);
       
-      //the type of name[expression] is the type of name minus the brackets
+      //the type of name[expression] is the type of name minus a set of brackets
       return new Type(type, type, 0, "", true);
       
     }
@@ -1123,7 +1123,7 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
      
      type = type.substr(0, arrayPos);
      
-      //the type of id[expression] is the type of id minus the brackets
+      //the type of id[expression] is the type of id minus a set of brackets
       return new Type(type, type, 0, "", true);
     }
   }
@@ -1290,53 +1290,13 @@ Type* Expression::getTypeCheck(SymTable* table)
       
       if(expType2 == 0) return 0;
 
-      
-      if((_subNodes[1]->getValue() == "&&") 
-        || (_subNodes[1]->getValue() == "||"))
+      if((expType1->getrval() != "int") || (expType2->getrval() != "int"))
       {
-        if((expType1->getrval() != "int") || (expType2->getrval() != "int"))
-        {
-          cerr << "Type Error: "  << "Expressions must be of type int" 
-          << " Line " << _lineNumber << endl;
-          return 0;
-        }
+        cerr << "Type Error: "  << "Expressions must be of type int" 
+        << " Line " << _lineNumber << endl;
+        return 0;
       }
-      else
-      {
-        if(expType1->getrval() == "int")
-        {
-          if(expType2->getrval() != "int")
-          {
-            cerr << "Type Error: "  << "Expressions must be of the same type" 
-            << " Line " << _lineNumber << endl;
-            return 0;
-          }
-          return expType1;
-        }
-        else if(expType1->getrval() == "null")
-        {
-          if(expType2->getrval() == "int")
-          {
-            cerr << "Type Error: "  << "Expressions must be of the same type" 
-            << " Line " << _lineNumber << endl;
-            return 0;
-          }
-          return expType2;
-        }
-        else
-        {
-          //Know exptype1 is a class type so null is always valid
-          if(expType2->getrval() == "null") return expType1;
-          
-          if(expType1->getrval() != expType2->getrval())
-          {
-            cerr << "Type Error: "  << "Expressions must be of the same type" 
-            << " Line " << _lineNumber << endl;
-            return 0;
-          }
-          return expType1;
-        } 
-      }
+      return expType1;
     }
     case EXPPAREN:
     {
