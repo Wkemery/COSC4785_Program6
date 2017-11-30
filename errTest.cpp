@@ -66,12 +66,13 @@ class ClassA
     /*other stuff that's not allowed by Buckner's command*/
 //     this[5] = null;//error "this" is not an array type
 //     this[0] = myClassA1;//error "this" is not an array type
-//     this[0][5] = null;
+//     this[0][5] = null; //error this is not an array type
 //     myintarr1[0](); //error explicit initialization of array value not allowed or direct constructor called
 //     myClassarrA1[0]();//error explicit initialization of array value not allowed  direct constructor called
 //     myClassarrA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
 //     myClassA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
-    
+//     this = myClassA1; //error, this is immutable.
+
     /*Unary Operators Test*/
 //     myClassA1 = +myClassA1;//error expression must be an int
 //     myClassA1 = -myClassA1;//error expression must be an int

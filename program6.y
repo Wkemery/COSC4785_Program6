@@ -241,6 +241,11 @@ statement: name ASSIGNOP expression SEMICO {
                   $$->setLineNumber($1->line);
                   delete $1; delete $2; delete $4; delete $5;
                   }
+            | PRINT LPAREN RPAREN SEMICO {
+                    $$ = new Statement(STMNTPRNTARGL);
+                    $$->setLineNumber($1->line);
+                    delete $1; delete $2; delete $3; delete $4;
+                  }
             | WHILE LPAREN expression RPAREN statement {
                   $$ = new Statement($3, $5, STMNTWHILE);
                   $$->setLineNumber($1->line);
@@ -290,6 +295,13 @@ statement: name ASSIGNOP expression SEMICO {
                   << ":" << $4->column << endl << endl;
                   yyerrok;
                   delete $1; delete $2; delete $3; delete $4;
+                }
+            | PRINT LPAREN RPAREN error {
+                  $$ = new ErrNode();
+                  cerr << "Expected semicolon after " << $3->line
+                  << ":" << $3->column << endl << endl;
+                  yyerrok;
+                  delete $1; delete $2; delete $3;
                 }
             | RETURN expression error{
                   $$ = new ErrNode();

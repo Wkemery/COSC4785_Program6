@@ -353,7 +353,18 @@ bool Statement::typeCheck(SymTable* table)
       //get type of expression
       Type* expType = _subNodes[1]->getTypeCheck(_myTable);
       if(expType == 0) return false;
+      string expTypeComp = expType->getrval();
       
+      if(expTypeComp == "this")
+      {
+        expType = _myTable->getClassType();
+        if(expType == 0) 
+        {
+          cerr << "FATAL internal error" << endl;
+          return false;
+        }
+        expTypeComp = expType->getClassType();
+      }
       //compare types
       
       if(nameType->getlval() == "")
@@ -362,7 +373,7 @@ bool Statement::typeCheck(SymTable* table)
         << " Line " << _lineNumber << endl;
         return false;
       }
-      if(expType->getrval() == "") 
+      if(expTypeComp == "") 
       {
         cerr << "Type Error: "  << "Invalid R value" 
         << " Line " << _lineNumber << endl;
@@ -371,7 +382,7 @@ bool Statement::typeCheck(SymTable* table)
       
       if(nameType->getlval() == "int")
       {
-        if(expType->getrval() != "int")
+        if(expTypeComp != "int")
         {
           cerr << "Type Error: "  << "Type Mismatch" 
           << " Line " << _lineNumber << endl;
@@ -381,9 +392,9 @@ bool Statement::typeCheck(SymTable* table)
       else
       {
         //Know lval is a class type so null is always valid
-        if(expType->getrval() == "null") return true;
+        if(expTypeComp == "null") return true;
         
-        if(nameType->getlval() != expType->getrval())
+        if(nameType->getlval() != expTypeComp)
         {
           cerr << "Type Error: "  << "Type Mismatch" 
           << " Line " << _lineNumber << endl;
@@ -436,7 +447,9 @@ bool Statement::typeCheck(SymTable* table)
     }
     case STMNTPRNTARGL:
     {
-      //get the types of the arguments 
+      //get the types of the arguments
+      if(_subNodes.size() == 0)
+        return true;
       Type* argsType = _subNodes[0]->getTypeCheck(_myTable);
       if(argsType == 0) return false;
       
@@ -769,6 +782,11 @@ Type* RNode::getTypeCheck(SymTable* table)
     vector<string>* argTypes = new vector<string>();
     for(unsigned int i = 0; i < _subNodes.size(); i++)
     {
+      Type* argType = _subNodes[i]->getTypeCheck(table);
+      if(argType == 0)
+      {
+        return 0;
+      }
       argTypes->push_back(_subNodes[i]->getTypeCheck(table)->getrval());
     }
     return new Type("","",argTypes, "", true);
@@ -1036,19 +1054,27 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
     case NAMEDOTID:
     {
       Type* nameType = ((Name*)_subNodes[0])->getTypeCheck(table, "");
+      string typeLookup;
       if(nameType == 0) return 0;
       if(nameType->getrval() == "this") 
-        nameType = table->getClassType();
-      if(nameType == 0) return 0;
-      
-      if(nameType->getlval() == "")
       {
-        cerr << "Type Error: \""  << _value << "\" Invalid L value" 
-        << " Line " << _lineNumber << endl;
-        return 0;
+        nameType = table->getClassType();
+        if(nameType == 0) return 0;
+        typeLookup = nameType->getClassType();
       }
+      else
+      {
+        if(nameType->getlval() == "")
+        {
+          cerr << "Type Error: \""  << _value << "\" Invalid L value" 
+          << " Line " << _lineNumber << endl;
+          return 0;
+        }
+        typeLookup = nameType->getlval();
+      }
+      
       if(mangledName == "") 
-        return table->lookup(nameType->getlval(), _value, _lineNumber);
+        return table->lookup(typeLookup, _value, _lineNumber);
       
       if(nameUnMangle(mangledName) == nameType->getlval())
       {
@@ -1056,7 +1082,7 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
         << " Line " << _lineNumber << endl;
         return 0;
       }
-      return table->lookup(nameType->getlval(), mangledName, _lineNumber);
+      return table->lookup(typeLookup, mangledName, _lineNumber);
     }
     case NAMEEXP:
     {
@@ -1254,25 +1280,30 @@ Type* Expression::getTypeCheck(SymTable* table)
       
       if((_subNodes[1]->getValue() == "==") || (_subNodes[1]->getValue() == "!="))
       {
-        if((expType1->getrval() != "int") || (expType2->getrval() != "int"))
+        if(expType1->getrval() == "int")
         {
-          cerr << "Type Error: "  << "Expressions must be of type int" 
-          << " Line " << _lineNumber << endl;
-          return 0;
+          if(expType2->getrval() != "int")
+          {
+            cerr << "Type Error: "  << "Expressions must be of the same type - int" 
+            << " Line " << _lineNumber << endl;
+            return 0;
+          }
+        }
+        else
+        {
+          if((expType1->getrval() != "null") && (expType2->getrval() != "null"))
+          {
+            cerr << "Type Error: "  << "Object References can only be compared to null" 
+            << " Line " << _lineNumber << endl;
+            return 0;
+          }
         }
       }
       else
       {
-        if((expType1->getrval() == "int" && expType2->getrval() != "int") ||
-          (expType2->getrval() == "int" && expType1->getrval() != "int"))
+        if((expType1->getrval() != "int") || (expType2->getrval() != "int"))
         {
-          cerr << "Type Error: "  << "Expressions must be of the same type - int" 
-          << " Line " << _lineNumber << endl;
-          return 0;
-        }
-        else if((expType1->getrval() != "null") && (expType2->getrval() != "null"))
-        {
-          cerr << "Type Error: "  << "Object References can only be compared to null" 
+          cerr << "Type Error: "  << "Expressions must be of type int" 
           << " Line " << _lineNumber << endl;
           return 0;
         }

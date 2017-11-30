@@ -121,8 +121,7 @@ Type* SymTable::lookup(string className, string identifier, int linenum) const
   
   if(!this->classLookup(className))
   {
-    cerr << "Type Error: " << "Class Name \"" << className << "\" Does Not exist"  
-    << endl;
+    cerr << "Type Error: " << "Class Name \"" << className << "\" Does Not exist";  
     return 0;
   }
   
