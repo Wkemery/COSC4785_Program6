@@ -1080,13 +1080,14 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
         return 0;
       }
       
-      //remove any [] from type
+      //remove 1 set of [] from type
       string type = nameType->getlval();
-      unsigned int arrayPos = type.find_first_of("[");
-      if(arrayPos == string::npos)
+      unsigned int arrayPos = type.find_last_of("[");
+      if(arrayPos > type.length())
       {
-        cerr << "Fatal Internal Error" << endl;
-        exit(1);
+        cerr << "Type Error: "  << "Invalid Dimensions on Array access" 
+        << " Line " << _lineNumber << endl;
+        return 0;
       }
       type = type.substr(0, arrayPos);
       
@@ -1110,17 +1111,18 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
         return 0;
       }
       
-      //remove any [] from type
+      //remove 1 [] from type
       string type = idType->getlval();
-      unsigned int arrayPos = type.find_first_of("[");
-      if(arrayPos == string::npos)
+      unsigned int arrayPos = type.find_last_of("[");
+      if(arrayPos > type.length())
       {
-        cerr << "Fatal Internal Error" << endl;
-        exit(1);
+        cerr << "Type Error: "  << "\"" << _value << "\" not of array type" 
+        << " Line " << _lineNumber << endl;
         return 0;
       }
-      type = type.substr(0, arrayPos);
-      
+     
+     type = type.substr(0, arrayPos);
+     
       //the type of id[expression] is the type of id minus the brackets
       return new Type(type, type, 0, "", true);
     }
@@ -1867,7 +1869,7 @@ bool ConstructorDec::typeCheck(SymTable* table)
       
       //remove any []
       unsigned int arrayPos = type.find_first_of("[");
-      if(arrayPos != string::npos)
+      if(arrayPos < type.length())
         type = type.substr(0,arrayPos);
       
       if(type != "int")
@@ -2117,7 +2119,7 @@ bool MethodDec::typeCheck(SymTable* table)
     
     //remove any []
     unsigned int arrayPos = type.find_first_of("[");
-    if(arrayPos != string::npos)
+    if(arrayPos < type.length())
       type = type.substr(0, arrayPos);
     
     if(type != "int")
@@ -2141,7 +2143,7 @@ bool MethodDec::typeCheck(SymTable* table)
       
       //remove any []
       unsigned int arrayPos = type.find_first_of("[");
-      if(arrayPos != string::npos)
+      if(arrayPos < type.length())
         type = type.substr(0, arrayPos);
       
       if(type != "int")
@@ -2240,7 +2242,7 @@ bool VarDec::typeCheck(SymTable* table)
   
   //remove any []
   unsigned int arrayPos = type.find_first_of("[");
-  if(arrayPos != string::npos)
+  if(arrayPos < type.length())
     type = type.substr(0, arrayPos);
   
   if(type != "int")

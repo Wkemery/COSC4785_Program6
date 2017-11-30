@@ -10,7 +10,9 @@ class ClassB
 {
   int z;
   int[] iarr;
-  int mymethod(int x, ClassA y){}
+  int mymethod(int x, ClassA y){
+  bs[0] = bs;
+  }
 }
 
 class ClassC

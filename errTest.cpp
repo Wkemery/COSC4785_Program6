@@ -41,6 +41,8 @@ class ClassA
 //     if(myint1 + null){} //error type mismatch
 //     myClassA1 = myint1; //error type mismatch
 //     myint1 = myClassA1; //error type mismatch
+//     myint1[0] = 5; // myint1 not array type
+//     myintarr1[6][5] = 0; //error invalid dimensions on array access
 
     /* Boolean tests*/
 //     if(myClassA1 + null){} //error type does not evaluate to boolean
