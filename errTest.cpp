@@ -56,8 +56,9 @@ class ClassA
     /*Arithmetic Operators Tests*/
 //     if(myClassB1 < myint1){} // error both exps must be int
 //     if(myint1 > myClassB1){} // error both exps must be int
-//     if(myClassB1 <= myClassA1){} //error can't compare object to nonnull
-//     if(myClassB1 >= myClassB1){} //error can't compare object to nonnull  
+//     if(myClassB1 <= myClassA1){} //error bothe exps must be int
+//     if(myClassB1 >= myClassB1){} //error bothe exps must be int
+//     if(myClassA1 == myClassA1){}//error cant companre to nonnull
 //     myClassA1 = myClassA1 + myClassA1; //error both exps must be int
 //     myClassA1 = myClassA1 - null; //error both exps must be int
 //     myClassB1 = myClassB1 / myClassB1; //error both exps must be int
@@ -67,8 +68,8 @@ class ClassA
 //     this[5] = null;//error "this" is not an array type
 //     this[0] = myClassA1;//error "this" is not an array type
 //     this[0][5] = null; //error this is not an array type
-//     myintarr1[0](); //error explicit initialization of array value not allowed or direct constructor called
-//     myClassarrA1[0]();//error explicit initialization of array value not allowed  direct constructor called
+    myintarr1[0](); //error explicit initialization of array value not allowed or direct constructor called
+    myClassarrA1[0]();//error explicit initialization of array value not allowed  direct constructor called
 //     myClassarrA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
 //     myClassA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
 //     this = myClassA1; //error, this is immutable.
@@ -113,9 +114,9 @@ class ClassA
 //     myintarr5 = new int[][][][][];//error invalid number of dimensions allocated
 //     myintarr5 = new int[];//error invalid number of dimensions allocated
 //     myint1 = new int; //error cannot do this for ints
-    
+//     
 //     myint1 = myint2 + myClassA1;//errr expressions different types
-    
+//     
 //     return 1; //error invalid return type
   }
   
