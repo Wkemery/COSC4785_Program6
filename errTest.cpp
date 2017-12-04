@@ -68,8 +68,8 @@ class ClassA
 //     this[5] = null;//error "this" is not an array type
 //     this[0] = myClassA1;//error "this" is not an array type
 //     this[0][5] = null; //error this is not an array type
-    myintarr1[0](); //error explicit initialization of array value not allowed or direct constructor called
-    myClassarrA1[0]();//error explicit initialization of array value not allowed  direct constructor called
+//     myintarr1[0](); //error explicit initialization of array value not allowed or direct constructor called
+//     myClassarrA1[0]();//error explicit initialization of array value not allowed  direct constructor called
 //     myClassarrA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
 //     myClassA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
 //     this = myClassA1; //error, this is immutable.
@@ -99,14 +99,14 @@ class ClassA
 //     ClassA();//error direct constructor call
 
     /*new tests*/
-//         myint1 = new ClassNone();//error classnone dne
-//         myint1 = new ClassNone(myint1);//error classnone dne
-//         myint1 = new ClassNone[][];//error classnone dne
-//         myint1 = new ClassNone[5][];//error classnone dne
-//         myintarr1 = new int[myClassA1];//error [doesnt evaluate to int]
-//         myintarr1 = new int[new int[]];//error [doesnt evaluate to int]
-//         myintarr1[new int] = 5;//error new int not allowed
-//         myintarr1[new ClassA()] = 5; //error [doesnt evaluate to int]
+//     myint1 = new ClassNone();//error classnone dne
+//     myint1 = new ClassNone(myint1);//error classnone dne
+//     myint1 = new ClassNone[][];//error classnone dne
+//     myint1 = new ClassNone[5][];//error classnone dne
+//     myintarr1 = new int[myClassA1];//error [doesnt evaluate to int]
+//     myintarr1 = new int[new int[]];//error [doesnt evaluate to int]
+//     myintarr1[new int] = 5;//error new int not allowed
+//     myintarr1[new ClassA()] = 5; //error [doesnt evaluate to int]
 //     myint1 = new int;//error new int not allowed
 //     myintarr5 = new int[10][2][9][][]; //error invalid number of dimensions allocated
 //     myintarr5 = new int[10][2][][][];//error invalid number of dimensions allocated

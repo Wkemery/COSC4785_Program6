@@ -992,7 +992,7 @@ Name::Name(Node* name, Node* expression, int kind):Node("", "Name", kind)
 
 string Name::getFuncName()
 {
-  if(_kind == NAMEDOTID || _kind == NAMEID || _kind == NAMETHIS)
+  if(_kind == NAMEDOTID || _kind == NAMEID || _kind == NAMETHIS || _kind == NAMEIDEXP)
     return _value;
   return "";
 }
@@ -1086,6 +1086,13 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
     }
     case NAMEEXP:
     {
+      if(mangledName != "")
+      {
+        cerr << "Type Error: "  << "explicit initialization of array value not allowed"
+        << " Line " << _lineNumber << endl;
+        return 0;
+      }
+      
       Type* nameType = ((Name*)_subNodes[0])->getTypeCheck(table, "");
       if(nameType == 0) return 0;
       if(nameType->getrval() == "this") 
@@ -1123,7 +1130,12 @@ Type* Name::getTypeCheck(SymTable* table, string mangledName = "")
     }
     case NAMEIDEXP:
     {
-    
+      if(mangledName != "")
+      {
+        cerr << "Type Error: "  << "explicit initialization of array value not allowed"
+        << " Line " << _lineNumber << endl;
+        return 0;
+      }
       Type* idType =  table->lookup(_value);
       if(idType == 0) return 0;
       
