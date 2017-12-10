@@ -663,14 +663,14 @@ name: THIS {
             yyerrok;
             delete $1; delete $2;
             }
-      | error DOTOP IDENTIFIER {
+/*      | error DOTOP IDENTIFIER {
             $$ = new ErrNode();
             cerr << "Expected name before '.' at " << $2->line << ":" 
             << $2->column << endl << endl;
             yyclearin;
             yyerrok;
             delete $2; delete $3;
-            }
+            }*/
       | name LBRACK expression RBRACK { 
             $$ = new Name($1, $3, NAMEEXP);
             $$->setLineNumber($1->getLineNumber());

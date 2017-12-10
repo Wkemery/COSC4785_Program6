@@ -139,7 +139,7 @@ Type* SymTable::lookup(string className, string identifier, int linenum) const
   if(idType == 0)
   {
     cerr << "Type Error: " << "Identfier \"" << nameUnMangle(identifier) 
-    << "\" Not Declared within " << className << " Line " << linenum  
+    << "\" Not Declared within \"" << className << "\" Line " << linenum  
     << endl;
     return 0;
   }

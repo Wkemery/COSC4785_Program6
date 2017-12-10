@@ -101,7 +101,7 @@ void ClassDec::buildTable(SymTable* table)
   ret = table->insert(_value, mytype);
   if(ret == -1)
   {
-    cerr << "Type Error: Class \"" << _value << "\" Declared Twice" 
+    cerr << "Type Error: Class \"" << _value << "\" Redeclared" 
     << " Line " << _lineNumber << endl;
     return;
   }
@@ -112,7 +112,7 @@ void ClassDec::buildTable(SymTable* table)
   if(ret == -1)
   {
     //should never happen
-    cerr << "Type Error: Class \"" << _value << "\" Declared Twice" 
+    cerr << "Type Error: Class \"" << _value << "\" Redeclared" 
     << " Line " << _lineNumber << endl;
     return;
   }
@@ -330,18 +330,19 @@ void Statement::buildTable(SymTable* table)
       return;
     }
     _myTable = myTable;
-    _subNodes[childi]->buildTable(myTable);
+    _subNodes[childi]->buildTable(_myTable);
   }
   else
   {
     _myTable = table;
-    if(childi != -1) _subNodes[childi]->buildTable(table);
+    if(childi != -1) _subNodes[childi]->buildTable(_myTable);
   }
   
 }
 
 bool Statement::typeCheck(SymTable* table)
 {
+  if(_myTable == 0){return false;}
   switch(_kind)
   {
     case STMNTNAMEEXP:
@@ -1271,6 +1272,10 @@ Type* Expression::getTypeCheck(SymTable* table)
     case EXPUNARY:
     {
       Type* expType = _subNodes[1]->getTypeCheck(table);
+      if(expType == 0)
+      {
+        return 0;
+      }
       if(expType->getrval() != "int")
       {
         cerr << "Type Error: "  << "Expression must be of type int" 
@@ -1810,7 +1815,7 @@ void ConstructorDec::buildTable(SymTable* table)
   ret = table->insert(nameMangle(_value, paramTypes), myType);
   if(ret == -1)
   {
-    cerr << "Type Error: "  << "Constructor \"" << _value << "\" Declared Twice"
+    cerr << "Type Error: "  << "Constructor \"" << _value << "\" Redeclared"
     << " Line " << _lineNumber << endl;
     return;
   }
@@ -1820,7 +1825,7 @@ void ConstructorDec::buildTable(SymTable* table)
   if(ret == -1)
   {
     //shouldn't get this error because the first one should stop it
-    cerr << "Type Error: "  << "Constructor \"" << _value << "\" Declared Twice"
+    cerr << "Type Error: "  << "Constructor \"" << _value << "\" Redeclared"
     << " Line " << _lineNumber << endl;
     return;
   }
@@ -1833,7 +1838,7 @@ void ConstructorDec::buildTable(SymTable* table)
       ret = myTable->insert(paramNames->at(i), paramType);
       if(ret == -1)
       {
-        cerr << "Type Error: Local variable \"" << paramNames->at(i) <<  "\" declared twice" 
+        cerr << "Type Error: Local variable \"" << paramNames->at(i) <<  "\" Redeclared" 
         << " Line " << _lineNumber << endl;
         return;
       }
@@ -2043,7 +2048,7 @@ void MethodDec::buildTable(SymTable* table)
   ret = table->insert(nameMangle(_value, paramTypes), myType);
   if(ret == -1)
   {
-    cerr << "Type Error: "  << "Method \"" << _value << "\" Declared Twice"
+    cerr << "Type Error: "  << "Method \"" << _value << "\" Redeclared"
     << " Line " << _lineNumber << endl;
     return;
   }
@@ -2053,7 +2058,7 @@ void MethodDec::buildTable(SymTable* table)
   ret = table->addChild(myTable);
   if(ret == -1)
   {
-    cerr << "Type Error: "  << "Method \"" << _value << "\" Declared Twice"
+    cerr << "Type Error: "  << "Method \"" << _value << "\" Redeclared"
     << " Line " << _lineNumber << endl;
     return;
   }
@@ -2067,7 +2072,7 @@ void MethodDec::buildTable(SymTable* table)
       ret = myTable->insert(paramNames->at(i), paramType);
       if(ret == -1)
       {
-        cerr << "Type Error: Local variable \"" << paramNames->at(i) <<  "\" declared twice" 
+        cerr << "Type Error: Local variable \"" << paramNames->at(i) <<  "\" Redeclared" 
         << " Line " << _lineNumber << endl;
         return;
       }
@@ -2231,7 +2236,7 @@ void VarDec::buildTable(SymTable* table)
   ret = table->insert(_value, mytype);
   if(ret == -1) 
   {
-    cerr << "Type Error: local variable \"" << _value <<  "\" declared twice" 
+    cerr << "Type Error: local variable \"" << _value <<  "\" Redeclared" 
     << " Line " << _lineNumber << endl;
     return;
   }
@@ -2239,6 +2244,7 @@ void VarDec::buildTable(SymTable* table)
 
 bool VarDec::typeCheck(SymTable* table)
 {
+  if(_myTable == 0) {return false;}
   // need to validate type
   //get my type from my child typenode
   string type = ((TypeNode*)_subNodes[0])->getType();
