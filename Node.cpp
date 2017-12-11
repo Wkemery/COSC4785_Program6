@@ -1970,6 +1970,19 @@ MethodDec::MethodDec(string value, Node* node1, int kind)
 
 void MethodDec::buildTable(SymTable* table)
 {
+  Type* classType = table->getClassType();
+  if (classType == 0)
+  {
+    cerr << "FATAL Internal Error" << endl;
+    return;
+  }
+  if(classType->getClassType() == _value)
+  {
+    cerr << "Type Error: "  << "Method name \"" << _value << "\" must differ from class name"
+    << " Line " << _lineNumber << endl;
+    return;
+  }
+  
   // get parameter types from param list child
   vector<string>* paramTypes = 0;
   vector<string>* paramNames = 0;

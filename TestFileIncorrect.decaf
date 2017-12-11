@@ -61,10 +61,10 @@ class four {
 //--- MethodDec Errors ---//
 class five {
   // Constructors can't have a return type and
-  // methods can't be named the same as the class//TODO: incorporate this into my project
-  int five() {
-    int two;
-  }
+  // methods can't be named the same as the class
+//   int five() {
+//     int two;
+//   }
   
   // Return statement must match return type
   int method1() {
