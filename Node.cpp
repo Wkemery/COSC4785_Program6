@@ -2113,7 +2113,7 @@ void MethodDec::buildTable(SymTable* table)
   //call buildTable on my child - the block
   _subNodes[blockChildi]->buildTable(myTable);
   
-  delete paramNames;
+  if(paramNames != 0) delete paramNames;
   
 }
 
