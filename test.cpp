@@ -32,6 +32,9 @@ class ClassB
     if(-myint){}
     if(myA1.y[5].myint){}
     if((myA1 == null) || (myint == 0) || (myintarr2[5][2] == myintarr2[0][0]))
+    if(myB1 == this){}
+    if(this == null){}
+    if(null == null){}
     /*Arithmetic Operators Tests*/
     if(5 < 4){}
     if(myint > 0){}
@@ -121,7 +124,7 @@ class ClassC
     if(null == null){}
     if((myClassA1 == null) && (myint1 == 0)){}
     this.myint1 = 0;
-    myClassC1 = this;
+    
   }
   
   int[][] method2(){}

@@ -358,13 +358,16 @@ bool Statement::typeCheck(SymTable* table)
       
       if(expTypeComp == "this")
       {
-        expType = _myTable->getClassType();
-        if(expType == 0) 
-        {
-          cerr << "FATAL internal error" << endl;
-          return false;
-        }
-        expTypeComp = expType->getClassType();
+//         expType = _myTable->getClassType();
+//         if(expType == 0) 
+//         {
+//           cerr << "FATAL internal error" << endl;
+//           return false;
+//         }
+//         expTypeComp = expType->getClassType();
+        cerr << "Type Error: "  << "Cannot assign \"this\" to an object reference" 
+        << " Line " << _lineNumber << endl;
+        return false;
       }
       //compare types
       
@@ -497,7 +500,7 @@ bool Statement::typeCheck(SymTable* table)
       //if there is not an expression type is void
       if(_subNodes.size() == 0)
       {
-        expType =  new Type("", "void");
+        expType =  new Type("", "void", 0, "", true);
       }
       else
       {
@@ -531,6 +534,12 @@ bool Statement::typeCheck(SymTable* table)
       //empty param list function call
       //get type of function name from symbol table
       string funcName = ((Name*)_subNodes[0])->getFuncName();
+      if(funcName == "main")
+      {
+        cerr << "Type Error: "  << "Direct main() call" 
+        << " Line " << _lineNumber << endl;
+        return false;   
+      }
       Type* classType = _myTable->getClassType();
       if(classType == 0)
       {
@@ -1306,11 +1315,13 @@ Type* Expression::getTypeCheck(SymTable* table)
             return 0;
           }
         }
-        else
+        else //reference type,  object reference or "this"
         {
-          if((expType1->getrval() != "null") && (expType2->getrval() != "null"))
-          {
-            cerr << "Type Error: "  << "Object References can only be compared to null" 
+          if(!(expType1->getrval() == "this" || expType2->getrval() == "this")
+            && ((expType1->getrval() != "null") && (expType2->getrval() != "null"))
+          )
+          {          
+            cerr << "Type Error: "  << "Object References can only be compared to \"null\" or \"this\"" 
             << " Line " << _lineNumber << endl;
             return 0;
           }
@@ -1398,7 +1409,14 @@ Type* Expression::getTypeCheck(SymTable* table)
     {
       //empty param list function call
       //get type of function name from symbol table
-      string mangledFuncName = nameMangle(((Name*)_subNodes[0])->getFuncName(), 0);
+      string funcName = ((Name*)_subNodes[0])->getFuncName();
+      if(funcName == "main")
+      {
+        cerr << "Type Error: "  << "Direct main() call" 
+        << " Line " << _lineNumber << endl;
+        return 0;  
+      }
+      string mangledFuncName = nameMangle(funcName, 0);
       Type* funcType = ((Name*)_subNodes[0])->getTypeCheck(table, mangledFuncName);
       if(funcType == 0) return 0;
       
@@ -1608,7 +1626,7 @@ Type* NewExpression::getTypeCheck(SymTable* table)
       
 //       delete argsType;
       
-      return new Type("", _value);
+      return new Type("", _value, 0, "", true);
     }
     case NEWEXPBRACK:
     {

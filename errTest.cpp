@@ -19,7 +19,10 @@ class ClassA
     return;
   }
 //   ClassA(){}//error constructor delcared twice
-  ClassA(int myvar1, ClassA myvar2){}
+  ClassA(int myvar1, ClassA myvar2)
+  {
+//     main();//error cannot call main
+  }
 //   A(){}//Error constructor name does not match class name
 //   ClassA(int var1, ClassNone var2){}//error invalid type classNone
 //   ClassA(int var1, int var1){} //error var1 declared twice
@@ -51,6 +54,7 @@ class ClassA
 //     if(!myClassA1){}//error expression does not evaluate to boolean or not allowed with !
 //     if(+myClassA1){}//error expression does not evaluate to boolean
 //     if((myClassA1 == null) && (myint1 == null)){}//error expressions not of same tyupe
+//     if(myClassA1 == myClassA1){}//error cant compare object references to each other    
 
     
     /*Arithmetic Operators Tests*/
@@ -73,6 +77,8 @@ class ClassA
 //     myClassarrA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
 //     myClassA1[0](myint1); //error explicit initialization of array value not allowed  direct constructor called
 //     this = myClassA1; //error, this is immutable.
+//     myClassA1 = this; //error, cannot set an object to "this"
+//     myClassA1.main();//error direct call to main
 
     /*Unary Operators Test*/
 //     myClassA1 = +myClassA1;//error expression must be an int
