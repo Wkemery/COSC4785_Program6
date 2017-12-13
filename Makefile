@@ -31,7 +31,7 @@ program6_bison.c: program6.y
 tar: program6.cpp program6.lpp Lexeme.cpp Lexeme.h Makefile
 	tar -cf wemery_HW6.tar program6.cpp program6.lpp Lexeme.cpp Lexeme.h \
 	program6.y Node.h Node.cpp SymTable.h SymTable.cpp program6_readme.txt \
-	program6.pdf Makefile
+	Makefile
 
 clean: 
 	/bin/rm -f *.o core.* *.output program6 program6_lex.cpp wemery_HW6.tar \

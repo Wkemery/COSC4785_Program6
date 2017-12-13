@@ -1,15 +1,11 @@
 # COSC4785_Program5
 Valid input:
   The Decaf grammar as it is described in the document
-  
-types and null:
-Since null is a valid type for all non-integer types, ie, any non integer variable
-can be set to null, I allow most operators to act with null. EG
-you can do something like
-A x;
-x = null + null;
-if(x == null){}
-etc...
+
+new expression:
+I chose to not allow something like
+int [][][] x;
+x = new int[][][];
 
 are parenthesis optional? yes
 Based off of my questions to you, I chose to implement the following:
