@@ -1,2 +1,4 @@
 # COSC4785_Program6
-Final Assigment. Fine tune Type checking
+Example Code for later. Since it built on previous versions. This is the most functional of the compilers programs.
+Complete Type checking, syntax checking, and lexical checking.
+Did not start generating 3 address code
